@@ -89,7 +89,7 @@ const Contact = () => {
             type="text"
             placeholder="Enter your name"
             required
-            className="flex-1 p-3 outline-none border-[0.5px] dark:border-[1px] border-gray-400 rounded-md bg-white dark:bg-darkHover/30 dark:border-white"
+            className="flex-1 p-3 outline-none border-[0.5px] dark:border-[1px] border-gray-700 rounded-md bg-white dark:bg-darkHover/30 dark:border-white"
             name="name"
             value={formData.name}
             onChange={handleOnChange}
@@ -102,7 +102,7 @@ const Contact = () => {
             type="email"
             placeholder="Enter your email"
             required
-            className="flex-1 p-3 outline-none border-[0.5px] dark:border-[1px] border-gray-400 rounded-md bg-white dark:bg-darkHover/30 dark:border-white"
+            className="flex-1 p-3 outline-none border-[0.5px] dark:border-[1px] border-gray-700 rounded-md bg-white dark:bg-darkHover/30 dark:border-white"
             name="email"
             value={formData.email}
             onChange={handleOnChange}
@@ -115,7 +115,7 @@ const Contact = () => {
           rows="6"
           placeholder="Enter your message"
           required
-          className="w-full p-4 outline-none border-[0.5px] dark:border-[1px] border-gray-400 rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white"
+          className="w-full p-4 outline-none border-[0.5px] dark:border-[1px] border-gray-700 rounded-md bg-white mb-6 dark:bg-darkHover/30 dark:border-white"
           name="message"
           value={formData.message}
           onChange={handleOnChange}

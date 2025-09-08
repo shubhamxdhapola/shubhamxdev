@@ -91,12 +91,12 @@ const About = ({ isDarkMode }) => {
             initial={{ y: -10, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="flex items-center justify-center md:justify-start gap-3 sm:gap-5 flex-wrap"
+            className="flex items-center  md:justify-start gap-4 sm:gap-5 flex-wrap"
           >
             {SKILLS.map((skill, index) => (
               <motion.li
                 whileHover={{ scale: 1.1 }}
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-500 rounded-lg cursor-pointer hover:-translate-y-1 duration-500 dark:border-white group relative dark:hover:bg-darkHover"
+                className="flex items-center justify-center w-14 aspect-square border border-gray-500 rounded-lg cursor-pointer hover:-translate-y-1 duration-500 dark:border-white group relative dark:hover:bg-darkHover"
                 key={index}
               >
                 <img

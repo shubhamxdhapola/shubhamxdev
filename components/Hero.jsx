@@ -15,7 +15,6 @@ const Hero = () => {
       >
         <img
           src="/images/profile.png"
-          fill={true}
           alt="profile-image"
           className="object-cover object-[center_-8px] w-full h-full"
         />
@@ -62,7 +61,7 @@ const Hero = () => {
           initial={{ y: 30, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.2 }}
-          href="/sample-resume.pdf"
+          href="/Shubham_Dhapola_Resume.pdf"
           download
           className="px-8 py-3 border rounded-full border-gray-500 flex items-center gap-2 bg-white dark:text-black"
         >

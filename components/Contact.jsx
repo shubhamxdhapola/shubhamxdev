@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import axios from "axios";
 
 const Contact = () => {
+  
   const initialFormData = {
     name: "",
     email: "",
@@ -82,8 +83,8 @@ const Contact = () => {
       >
         <div className="grid grid-cols-auto gap-6 mt-10 mb-8">
           <motion.input
-            initial={{ x: -50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
+            initial={{ y: -50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.6 }}
             type="text"
             placeholder="Enter your name"
@@ -95,8 +96,8 @@ const Contact = () => {
           />
 
           <motion.input
-            initial={{ x: 50, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
+            initial={{ y: -50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.9, duration: 0.6 }}
             type="email"
             placeholder="Enter your email"
@@ -108,7 +109,7 @@ const Contact = () => {
           />
         </div>
         <motion.textarea
-          initial={{ y: -100, opacity: 0 }}
+          initial={{ y: 50, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.6 }}
           rows="6"
@@ -122,7 +123,7 @@ const Contact = () => {
 
         <motion.button
           whileHover={{ scale: 1.05 }}
-          transition={{ delay : 0.9, duration: 0.3 }}
+          transition={{ delay: 0.9, duration: 0.3 }}
           type="submit"
           className={`py-3 px-8 w-max flex items-center justify-between gap-2 text-white rounded-full mx-auto hover:bg-black/80 duration-300 dark:bg-transparent dark:border-[1px] dark:hover:bg-darkHover ${
             submitting

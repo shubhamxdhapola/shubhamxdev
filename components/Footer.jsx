@@ -12,7 +12,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="text-center sm:flex items-center justify-between border-t border-gray-400 mx-[10%] mt-12 py-8 md:py-6">
+      <div className="flex flex-col-reverse sm:flex-row items-center justify-between border-t border-gray-400 mx-[10%] mt-12 py-8 md:py-6 gap-4 sm:gap-2">
         <p>© {new Date().getFullYear()} shubhamxdev. All rights reserved.</p>
         <ul className="flex items-center gap-6 justify-center mt-4 sm:mt-0">
           <li className="hover:scale-105 duration-300">

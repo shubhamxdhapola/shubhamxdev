@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 const Hero = () => {
   return (
@@ -13,10 +14,12 @@ const Hero = () => {
         transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
         className="w-32 h-32 overflow-hidden rounded-full relative"
       >
-        <img
-          src="/images/profile.png"
+        <Image
+          src="/images/pfp.png"
           alt="profile-image"
-          className="object-cover object-[center_-8px] w-full h-full"
+          fill={true}
+          quality={20}        
+          className="object-cover object-[center_-6px]"
         />
       </motion.div>
       <motion.h3

@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { SKILLS, INFO } from "@/utils/data";
+import Link from "next/link";
 
 const About = ({ isDarkMode }) => {
   return (
@@ -94,28 +95,29 @@ const About = ({ isDarkMode }) => {
             className="flex items-center  md:justify-start gap-4 sm:gap-5 flex-wrap"
           >
             {SKILLS.map((skill, index) => (
-              <motion.li
-                whileHover={{ scale: 1.1 }}
-                className="flex items-center justify-center w-14 aspect-square border border-gray-500 rounded-lg cursor-pointer hover:-translate-y-1 duration-500 dark:border-white group relative dark:hover:bg-darkHover"
-                key={index}
-              >
-                <img
-                  src={
-                    (isDarkMode &&
-                      skill.title == "GitHub" &&
-                      "/logos/githubdark.svg") ||
-                    (isDarkMode &&
-                      skill.title == "Express" &&
-                      "/logos/expressdark.svg") ||
-                    skill.src
-                  }
-                  alt={skill.title}
-                  className="w-6"
-                />
-                <span className="dark:bg-gray-800 border-[0.5px] bg-white border-gray-500 absolute -top-8 text-xs px-2 py-1 rounded opacity-0 duration-300 group-hover:opacity-100 whitespace-nowrap">
-                  {skill.title}
-                </span>
-              </motion.li>
+              <Link href={skill?.href} target="_blank" key={index}>
+                <motion.li
+                  whileHover={{ scale: 1.1 }}
+                  className="flex items-center justify-center w-14 aspect-square border border-gray-500 rounded-lg cursor-pointer hover:-translate-y-1 duration-500 dark:border-white group relative dark:hover:bg-darkHover"
+                >
+                  <img
+                    src={
+                      (isDarkMode &&
+                        skill.title == "GitHub" &&
+                        "/logos/githubdark.svg") ||
+                      (isDarkMode &&
+                        skill.title == "Express" &&
+                        "/logos/expressdark.svg") ||
+                      skill.src
+                    }
+                    alt={skill.title}
+                    className="w-6"
+                  />
+                  <span className="dark:bg-gray-800 border-[0.5px] bg-white border-gray-500 absolute -top-8 text-xs px-2 py-1 rounded opacity-0 duration-300 group-hover:opacity-100 whitespace-nowrap">
+                    {skill.title}
+                  </span>
+                </motion.li>
+              </Link>
             ))}
           </motion.ul>
         </motion.div>

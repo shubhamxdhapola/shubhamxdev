@@ -111,7 +111,7 @@ const Projects = () => {
         ))}
       </motion.div>
 
-      {visibleCount < PROJECTS_LIST.length && (
+      {visibleCount < PROJECTS_LIST.length ? (
         <motion.button
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -122,9 +122,7 @@ const Projects = () => {
           Show more
           <ArrowDown className="size-5" />
         </motion.button>
-      )}
-
-      {visibleCount == PROJECTS_LIST.length && (
+      ) : (
         <motion.button
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

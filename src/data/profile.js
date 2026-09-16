@@ -13,7 +13,7 @@ export const profileData = {
   avatarUrl: "/pfp.png",
   avatarAltUrl: "/memoji.png",
   bioParagraph1: "I am a Full Stack Developer (MERN) with hands-on experience across frontend, backend, and database layers — React, Node.js, Express, MongoDB, TypeScript, and Next.js.",
-  bioParagraph2: " Skilled in building secure REST APIs (JWT auth), responsive UIs (React, Tailwind CSS), and working with SQL and NoSQL databases. Open to Full Stack, Backend, Frontend, and Software Developer roles.",
+  bioParagraph2: "Skilled in building secure REST APIs (JWT auth), responsive UIs (React, Tailwind CSS), and working with SQL and NoSQL databases. Open to Full Stack, Backend, Frontend, and Software Developer roles.",
   whatIDo: [
     { title: "Full Stack Development", icon: "layers" },
     { title: "Frontend Development", icon: "code" },

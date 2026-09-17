@@ -93,7 +93,7 @@ export const projectsData = [
   },
   {
     id: 2,
-    slug: "petrol-pump",
+    slug: "sai-petrol-pump",
     altSlugs: ["project-two", "petrol-pump"],
     title: "Sai Petrol Pump",
     tagline: "AI-powered petrol pump management with automated operations, analytics, and reporting.",

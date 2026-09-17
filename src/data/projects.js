@@ -105,7 +105,7 @@ export const projectsData = [
     shadowColor: "#DB2777",
     image: "/thumbnails/ppms_thumbnail.png",
     description: "A full-stack petrol pump management system for handling employees, fuel sales, tank inventory, pricing, shifts, and AI-powered business queries.",
-    liveUrl: "https://sai-petrol-pump.vercel.app",
+    liveUrl: "https://sai-petrol-pump.onrender.com",
     githubUrl: "https://github.com/shubhamxdhapola/Sai-Petrol-Pump",
     bullets: [
       "Role-based dashboards for Admin and Employees",

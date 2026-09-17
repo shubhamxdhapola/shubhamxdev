@@ -6,6 +6,7 @@ import Work from "./pages/Work";
 import ProjectDetail from "./pages/ProjectDetail";
 import AboutPage from "./pages/AboutPage";
 import Resume from "./pages/Resume";
+import CertificationsPage from "./pages/CertificationsPage";
 import ClickSpark from "./components/reactbits/ClickSpark";
 import SmoothScroll from "./components/SmoothScroll";
 
@@ -37,6 +38,8 @@ export default function App() {
             <Route path="/work" element={<Work />} />
             <Route path="/work/:slug" element={<ProjectDetail />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/certifications" element={<CertificationsPage />} />
+            <Route path="/certificates" element={<CertificationsPage />} />
             <Route path="/resume" element={<Resume />} />
             <Route path="*" element={<Home />} />
           </Routes>

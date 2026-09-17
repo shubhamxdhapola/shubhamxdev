@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FiHome, FiBriefcase, FiUser, FiFileText } from "react-icons/fi";
+import { FiHome, FiBriefcase, FiUser, FiFileText, FiAward } from "react-icons/fi";
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
@@ -26,6 +26,7 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", path: "/", icon: FiHome },
     { name: "Work", path: "/work", icon: FiBriefcase },
+    { name: "Certificates", path: "/certifications", icon: FiAward },
     { name: "About", path: "/about", icon: FiUser },
     { name: "Resume", path: "/resume", icon: FiFileText },
   ];
@@ -62,7 +63,7 @@ export default function Navbar() {
                     to={link.path}
                     aria-label={link.name}
                     title={link.name}
-                    className={`relative z-10 flex items-center justify-center px-5 sm:px-6 md:px-7 py-2.5 sm:py-2 text-[13px] sm:text-sm font-medium tracking-wide transition-colors duration-200 select-none whitespace-nowrap ${active ? "text-white" : "text-white/55 hover:text-white/90"
+                    className={`relative z-10 flex items-center justify-center px-3.5 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-2 text-[13px] sm:text-sm font-medium tracking-wide transition-colors duration-200 select-none whitespace-nowrap ${active ? "text-white" : "text-white/55 hover:text-white/90"
                       }`}
                   >
                     <IconComponent className="size-5 sm:hidden" />

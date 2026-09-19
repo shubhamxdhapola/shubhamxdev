@@ -7,15 +7,25 @@ import ProjectDetail from "./pages/ProjectDetail";
 import AboutPage from "./pages/AboutPage";
 import Resume from "./pages/Resume";
 import CertificationsPage from "./pages/CertificationsPage";
+import LeetCodePage from "./pages/LeetCodePage";
 import ClickSpark from "./components/reactbits/ClickSpark";
 import SmoothScroll from "./components/SmoothScroll";
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (hash) {
+      setTimeout(() => {
+        const el = document.getElementById(hash.slice(1));
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
 
   return null;
 }
@@ -40,6 +50,7 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/certifications" element={<CertificationsPage />} />
             <Route path="/certificates" element={<CertificationsPage />} />
+            <Route path="/leetcode" element={<LeetCodePage />} />
             <Route path="/resume" element={<Resume />} />
             <Route path="*" element={<Home />} />
           </Routes>

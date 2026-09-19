@@ -3,8 +3,9 @@ import Hero from "../components/Hero";
 import About from "../components/About";
 import ProjectList from "../components/ProjectList";
 import Skills from "../components/Skills";
-import Education from "../components/Education";
+import LeetCodeStats from "../components/leetcode/LeetCodeStats";
 import Certifications from "../components/Certifications";
+import Education from "../components/Education";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
@@ -15,6 +16,7 @@ export default function Home() {
       <About />
       <ProjectList />
       <Skills />
+      <LeetCodeStats />
       <Certifications />
       <Education />
       <Contact />

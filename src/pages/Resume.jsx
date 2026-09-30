@@ -169,7 +169,7 @@ export default function Resume() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#FF4ECD] mt-0.5">•</span>
-                  <span><strong>Key Projects:</strong> Sai Petrol Pump (AI-powered MERN), BarbaeQ SaaS, BitLinks</span>
+                  <span><strong>Key Projects:</strong> Octane (AI-powered Fuel Station Platform), BarbaeQ SaaS, BitLinks</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-[#FF4ECD] mt-0.5">•</span>

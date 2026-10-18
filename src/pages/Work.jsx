@@ -3,10 +3,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiBriefcase, FiArrowRight, FiExternalLink, FiCalendar } from "react-icons/fi";
 import Footer from "../components/Footer";
-import { projectsData } from "../data/projects";
+import { useProjects } from "../hooks/queries";
+import { projectsData as fallbackProjects } from "../data/projects";
 import { getTechLogo } from "../utils/techLogos";
 
 export default function Work() {
+  const { data: allProjects } = useProjects();
+  const projects = allProjects || fallbackProjects;
   return (
     <div className="relative min-h-screen bg-[#030712] overflow-hidden text-gray-300">
       {/* Background ambient radial glow */}
@@ -76,7 +79,7 @@ export default function Work() {
         {/* Case Studies Grid */}
         <div id="case-studies" className="mt-20">
           <div className="grid gap-8 md:grid-cols-2">
-            {projectsData.map((project, index) => (
+            {projects.map((project, index) => (
               <motion.article
                 key={project.id}
                 initial={{ opacity: 0, y: 35, scale: 0.98 }}

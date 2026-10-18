@@ -10,6 +10,9 @@ import CertificationsPage from "./pages/CertificationsPage";
 import LeetCodePage from "./pages/LeetCodePage";
 import ClickSpark from "./components/reactbits/ClickSpark";
 import SmoothScroll from "./components/SmoothScroll";
+import InitialLoader from "./components/InitialLoader";
+import { useSiteContent, useProjects } from "./hooks/queries";
+import { LoadingProvider, useLoading } from "./context/LoadingContext";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -30,9 +33,21 @@ function ScrollToTop() {
   return null;
 }
 
-export default function App() {
+function AppContent() {
+  const { isPending: isSiteContentPending } = useSiteContent();
+  const { isPending: isProjectsPending } = useProjects();
+  const { setHasLoaded } = useLoading();
+
+  // Data is ready when both site content and projects have finished initial fetch
+  const isDataReady = !isSiteContentPending && !isProjectsPending;
+
   return (
     <BrowserRouter>
+      <InitialLoader
+        isReady={isDataReady}
+        minDuration={1400}
+        onComplete={() => setHasLoaded(true)}
+      />
       <SmoothScroll>
         <ClickSpark
           sparkColor="#FF4ECD"
@@ -57,5 +72,13 @@ export default function App() {
         </ClickSpark>
       </SmoothScroll>
     </BrowserRouter>
+  );
+}
+
+export default function App() {
+  return (
+    <LoadingProvider>
+      <AppContent />
+    </LoadingProvider>
   );
 }

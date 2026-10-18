@@ -3,12 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiHome, FiBriefcase, FiUser, FiFileText, FiAward } from "react-icons/fi";
 import MobileMenu from "./MobileMenu";
+import { useLoading } from "../context/LoadingContext";
 
 export default function Navbar() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hoveredPath, setHoveredPath] = useState(null);
+  const { hasLoaded } = useLoading();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +42,17 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-4 sm:top-5 left-1/2 -translate-x-1/2 z-50 pointer-events-auto">
+      <motion.header
+        initial={{ y: -50, opacity: 0, scale: 0.9, x: "-50%" }}
+        animate={hasLoaded ? { y: 0, opacity: 1, scale: 1, x: "-50%" } : { y: -50, opacity: 0, scale: 0.9, x: "-50%" }}
+        transition={{
+          type: "spring",
+          stiffness: 260,
+          damping: 20,
+          delay: hasLoaded ? 0.25 : 0,
+        }}
+        className="fixed top-4 sm:top-5 left-1/2 z-50 pointer-events-auto"
+      >
         {/* Wide Glassmorphic Floating Capsule - matching reference */}
         <nav
           className={`relative flex items-center justify-center rounded-full border border-white/[0.08] bg-black/60 sm:bg-black/40 backdrop-blur-lg px-2.5 py-2 sm:px-2 sm:py-1.5 shadow-2xl shadow-black/50 transition-all duration-500 ${scrolled ? "border-white/[0.12] bg-black/75 sm:bg-black/55 shadow-black/60" : ""
@@ -95,7 +107,7 @@ export default function Navbar() {
             })}
           </ul>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Mobile Drawer */}
       <MobileMenu

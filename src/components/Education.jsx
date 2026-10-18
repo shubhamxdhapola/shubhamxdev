@@ -4,9 +4,12 @@ import { FaGraduationCap } from "react-icons/fa";
 import { FiCalendar } from "react-icons/fi";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./reactbits/SpotlightCard";
-import { educationData } from "../data/education";
+import { useEducation } from "../hooks/queries";
+import { educationData as fallbackEducation } from "../data/education";
 
 export default function Education() {
+  const { data } = useEducation();
+  const educationData = data || fallbackEducation;
   return (
     <section id="education" className="relative overflow-hidden py-20 text-gray-300">
       {/* Background radial blurs */}

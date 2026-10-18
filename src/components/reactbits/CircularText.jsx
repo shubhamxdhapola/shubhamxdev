@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { motion, useAnimation, useMotionValue } from 'framer-motion';
 import './CircularText.css';
 
@@ -21,12 +21,31 @@ const getTransition = (duration, from) => ({
 });
 
 const CircularText = ({
-  text = 'OPEN TO WORK • OPEN TO WORK • OPEN TO WORK • OPEN TO WORK • ',
+  text = 'OPEN TO WORK ● ',
   spinDuration = 20,
   onHover = 'speedUp',
   className = '',
+  repeat = 1,
 }) => {
-  const letters = Array.from(text);
+  const fullText = useMemo(() => {
+    const raw = text || 'OPEN TO WORK ● ';
+    if (repeat > 1) {
+      return raw.repeat(repeat);
+    }
+    // If text has fewer than 75 characters, repeat the phrase to ensure letters are tightly packed
+    if (raw.length > 0 && raw.length < 75) {
+      const segment = raw.includes('●')
+        ? raw.split('●')[0].trim() + ' ● '
+        : raw.includes('•')
+          ? raw.split('•')[0].trim() + ' • '
+          : raw.trim() + ' ● ';
+      const count = Math.ceil(80 / segment.length);
+      return segment.repeat(Math.max(count, 5));
+    }
+    return raw;
+  }, [text, repeat]);
+
+  const letters = useMemo(() => Array.from(fullText), [fullText]);
   const controls = useAnimation();
   const rotation = useMotionValue(0);
 
@@ -37,7 +56,7 @@ const CircularText = ({
       scale: 1,
       transition: getTransition(spinDuration, start),
     });
-  }, [spinDuration, text, onHover, controls, rotation]);
+  }, [spinDuration, fullText, onHover, controls, rotation]);
 
   const handleHoverStart = () => {
     const start = rotation.get();

@@ -18,6 +18,7 @@ import SubmissionHeatmap from "./SubmissionHeatmap";
 import TiltCard from "./TiltCard";
 import { fetchLeetCodeStats } from "../../utils/leetcodeApi";
 import { LEETCODE_CONFIG } from "../../data/leetcode";
+import { useLeetCodeStats } from "../../hooks/queries";
 
 /**
  * AnimatedNumber component that counts up smoothly every time it scrolls into view
@@ -58,35 +59,51 @@ function AnimatedNumber({ value, duration = 0.9 }) {
   );
 }
 
-export default function LeetCodeStats({ showHeader = true, username = LEETCODE_CONFIG.username }) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function LeetCodeStats({ showHeader = true, username: propUsername }) {
+  const { data: cmsLeetCode, isLoading: isCmsLoading, refetch } = useLeetCodeStats();
+  const username = cmsLeetCode?.config?.username || propUsername || LEETCODE_CONFIG.username;
+
+  const [overrideData, setOverrideData] = useState(null);
+  const [fallbackLoading, setFallbackLoading] = useState(false);
   const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+
+  const data = overrideData || cmsLeetCode?.stats || null;
+  const loading = !data && (isCmsLoading || fallbackLoading);
 
   const loadStats = useCallback(
     async (force = false) => {
       try {
         if (force) setRefreshing(true);
-        else setLoading(true);
+        else setFallbackLoading(true);
         setError(null);
 
+        const cmsRes = await refetch();
+        if (cmsRes.data?.stats) {
+          setOverrideData(cmsRes.data.stats);
+          return;
+        }
+
         const stats = await fetchLeetCodeStats(username, force);
-        setData(stats);
+        setOverrideData(stats);
       } catch (err) {
         console.error("Failed to load LeetCode stats:", err);
-        setError(err.message || "Failed to load LeetCode statistics");
+        if (!data) {
+          setError(err.message || "Failed to load LeetCode statistics");
+        }
       } finally {
-        setLoading(false);
+        setFallbackLoading(false);
         setRefreshing(false);
       }
     },
-    [username]
+    [username, refetch, data]
   );
 
   useEffect(() => {
-    loadStats(false);
-  }, [loadStats]);
+    if (!isCmsLoading && !cmsLeetCode?.stats && !overrideData) {
+      loadStats(false);
+    }
+  }, [isCmsLoading, cmsLeetCode, overrideData, loadStats]);
 
   return (
     <section id="leetcode" className="relative py-20 text-gray-300 overflow-visible">

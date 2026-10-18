@@ -4,9 +4,12 @@ import { motion } from "framer-motion";
 import { FiSend, FiCheckCircle, FiLoader } from "react-icons/fi";
 import SectionHeading from "./SectionHeading";
 import SpotlightCard from "./reactbits/SpotlightCard";
-import { profileData } from "../data/profile";
+import { useSiteContent } from "../hooks/queries";
+import { profileData as fallbackProfile } from "../data/profile";
 
 export default function Contact() {
+  const { data } = useSiteContent();
+  const profileData = data?.profile || fallbackProfile;
   const [formData, setFormData] = useState({
     name: "",
     email: "",

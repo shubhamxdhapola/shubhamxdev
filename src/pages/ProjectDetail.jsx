@@ -15,22 +15,26 @@ import {
 } from "react-icons/fi";
 import { HiSparkles, HiLightBulb } from "react-icons/hi2";
 import { Github } from "../components/SocialIcons";
-import { projectsData } from "../data/projects";
+import { useProject } from "../hooks/queries";
 import { getTechLogo } from "../utils/techLogos";
 import Footer from "../components/Footer";
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const project = projectsData.find(
-    (p) =>
-      p.slug === slug ||
-      (p.altSlugs && p.altSlugs.includes(slug)) ||
-      p.id.toString() === slug
-  );
+  const { data: project, isLoading } = useProject(slug);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  if (isLoading && !project) {
+    return (
+      <div className="min-h-screen bg-[#030712] flex flex-col items-center justify-center text-white px-4">
+        <div className="size-10 rounded-full border-2 border-[#FF4ECD] border-t-transparent animate-spin mb-4" />
+        <p className="text-gray-400 text-sm">Loading project details...</p>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -50,7 +54,7 @@ export default function ProjectDetail() {
     );
   }
 
-  const { caseStudy } = project;
+  const caseStudy = project.caseStudy || {};
 
   return (
     <div className="relative min-h-screen bg-[#030712] text-gray-300 overflow-x-hidden">
@@ -380,7 +384,7 @@ export default function ProjectDetail() {
                 <h3 className="text-base font-bold text-white">Key Features</h3>
               </div>
               <ul className="space-y-3">
-                {caseStudy.keyFeatures.map((feat, i) => (
+                {(caseStudy.keyFeatures || []).map((feat, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm font-semibold text-gray-400/80">
                     <span className="text-emerald-400 mt-0.5">●</span>
                     <span>{feat}</span>
@@ -396,7 +400,7 @@ export default function ProjectDetail() {
                 <h3 className="text-base font-bold text-white">Challenges Solved</h3>
               </div>
               <ul className="space-y-3">
-                {caseStudy.challenges.map((ch, i) => (
+                {(caseStudy.challenges || []).map((ch, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm font-semibold text-gray-400/80">
                     <span className="text-amber-400 mt-0.5">●</span>
                     <span>{ch}</span>
@@ -412,7 +416,7 @@ export default function ProjectDetail() {
                 <h3 className="text-base font-bold text-white">Key Learnings</h3>
               </div>
               <ul className="space-y-3">
-                {caseStudy.learnings.map((lr, i) => (
+                {(caseStudy.learnings || []).map((lr, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm font-semibold text-gray-400/80">
                     <span className="text-[#FF4ECD] mt-0.5">●</span>
                     <span>{lr}</span>

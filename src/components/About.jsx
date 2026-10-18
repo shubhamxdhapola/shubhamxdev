@@ -9,8 +9,13 @@ import PixelTransition from "./reactbits/PixelTransition";
 import CircularText from "./reactbits/CircularText";
 import LogoLoop from "./reactbits/LogoLoop";
 import ScrollReveal from "./reactbits/ScrollReveal";
-import { profileData } from "../data/profile";
+import { useSiteContent } from "../hooks/queries";
+import { profileData as fallbackProfile } from "../data/profile";
+
 export default function About() {
+  const { data } = useSiteContent();
+  const profileData = data?.profile || fallbackProfile;
+
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -19,41 +24,31 @@ export default function About() {
   const glowY1 = useTransform(scrollYProgress, [0, 1], [-40, 40]);
   const glowY2 = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
-  const whatIDoLogos = [
-    {
-      node: (
-        <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-[#FF4ECD]/50 hover:bg-white/[0.08] hover:scale-105 transition-all duration-300 cursor-default select-none whitespace-nowrap">
-          <FiCode className="h-4 w-4 text-[#FF4ECD]" />
-          <span className="text-sm font-semibold text-gray-200">
-            Frontend Development
-          </span>
-        </div>
-      ),
-      title: "Frontend Development",
-    },
-    {
-      node: (
-        <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-[#FF4ECD]/50 hover:bg-white/[0.08] hover:scale-105 transition-all duration-300 cursor-default select-none whitespace-nowrap">
-          <FiTerminal className="h-4 w-4 text-[#D936B2]" />
-          <span className="text-sm font-semibold text-gray-200">
-            Backend Development
-          </span>
-        </div>
-      ),
-      title: "Backend Development",
-    },
-    {
-      node: (
-        <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-[#FF4ECD]/50 hover:bg-white/[0.08] hover:scale-105 transition-all duration-300 cursor-default select-none whitespace-nowrap">
-          <FiLayers className="h-4 w-4 text-[#FFD6F4]" />
-          <span className="text-sm font-semibold text-gray-200">
-            Full Stack Development
-          </span>
-        </div>
-      ),
-      title: "Full Stack Development",
-    },
-  ];
+  const whatIDoItems = profileData.whatIDo || fallbackProfile.whatIDo || [];
+  const whatIDoColors = ["text-[#FF4ECD]", "text-[#D936B2]", "text-[#FFD6F4]"];
+  const getIcon = (iconName, idx) => {
+    switch (iconName) {
+      case "code":
+        return <FiCode className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`} />;
+      case "terminal":
+        return <FiTerminal className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`} />;
+      case "layers":
+      default:
+        return <FiLayers className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`} />;
+    }
+  };
+
+  const whatIDoLogos = whatIDoItems.map((item, idx) => ({
+    node: (
+      <div className="flex items-center gap-2 bg-white/5 backdrop-blur-sm px-4 py-2 rounded-full border border-white/10 hover:border-[#FF4ECD]/50 hover:bg-white/[0.08] hover:scale-105 transition-all duration-300 cursor-default select-none whitespace-nowrap">
+        {getIcon(item.icon, idx)}
+        <span className="text-sm font-semibold text-gray-200">
+          {item.title}
+        </span>
+      </div>
+    ),
+    title: item.title,
+  }));
 
   return (
     <section
@@ -131,12 +126,12 @@ export default function About() {
             />
 
             {/* Circular Text from ReactBits */}
-            <div className="absolute -inset-6 sm:-inset-7 md:-inset-8 pointer-events-none flex items-center justify-center z-0 select-none">
+            <div className="absolute -inset-4 sm:-inset-5 md:-inset-8 pointer-events-none flex items-center justify-center z-0 select-none">
               <CircularText
-                text="OPEN TO WORK ● OPEN TO WORK ● OPEN TO WORK ● OPEN TO WORK ● "
+                text={profileData.circularText}
                 spinDuration={24}
                 onHover="speedUp"
-                className="size-full text-[#FFD6F4]/75 text-[12px] sm:text-[13px] md:text-[14px] font-bold uppercase tracking-[0.16em] sm:tracking-[0.2em] drop-shadow-[0_0_8px_rgba(255,78,205,0.4)] pointer-events-none"
+                className="size-full text-[#FFD6F4]/75 text-[12px] sm:text-[13px] md:text-[14px] font-bold uppercase drop-shadow-[0_0_8px_rgba(255,78,205,0.4)] pointer-events-none"
               />
             </div>
 
@@ -182,7 +177,7 @@ export default function About() {
               }}
               className="absolute -top-3 -right-2 sm:-top-5 sm:-right-4 md:-top-6 md:-right-6 bg-gradient-to-br from-[#FFD6F4] to-[#FF4ECD] text-slate-950 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-bold shadow-lg shadow-[#FF4ECD]/20 select-none z-30 cursor-default"
             >
-              Developer
+              {profileData.badgeTopRight || "Developer"}
             </motion.div>
 
             {/* Bottom-Left Floating Badge with counter-float */}
@@ -200,7 +195,7 @@ export default function About() {
               }}
               className="absolute -bottom-2 -left-2 sm:-bottom-3 sm:-left-4 md:-bottom-4 md:-left-6 bg-gradient-to-br from-slate-900/90 to-slate-950/90 text-[#FFD6F4] px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[12px] sm:text-xs md:text-sm font-medium shadow-lg border border-[#FF4ECD]/25 backdrop-blur-md select-none z-30 cursor-default"
             >
-              Full Stack
+              {profileData.badgeBottomLeft || "Full Stack"}
             </motion.div>
           </motion.div>
         </motion.div>

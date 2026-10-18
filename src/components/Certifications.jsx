@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiAward,
@@ -11,13 +10,16 @@ import {
   FiX,
   FiShield,
 } from "react-icons/fi";
-import { SiHackerrank, SiNodedotjs, SiReact } from "react-icons/si";
+import { SiHackerrank, SiNodedotjs } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import SectionHeading from "./SectionHeading";
 import ScrollStack, { ScrollStackItem } from "./reactbits/ScrollStack";
-import { certificationsData } from "../data/certifications";
+import { useCertifications } from "../hooks/queries";
+import { certificationsData as fallbackCerts } from "../data/certifications";
 
-export default function Certifications({ limit, showHeader = true, showViewAll = true }) {
+export default function Certifications({ limit, showHeader = true }) {
+  const { data } = useCertifications();
+  const certificationsData = data?.certifications || fallbackCerts;
   const [selectedCert, setSelectedCert] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
@@ -102,7 +104,7 @@ export default function Certifications({ limit, showHeader = true, showViewAll =
           stackHold="45vh"
           className="w-full"
         >
-          {displayedCerts.map((cert, index) => (
+          {displayedCerts.map((cert, _index) => (
             <ScrollStackItem key={cert.id}>
               <div className="relative rounded-2xl sm:rounded-3xl border border-white/[0.14] bg-[#080C16] p-5 sm:p-6 md:p-7 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95),0_0_25px_rgba(255,78,205,0.06)] transition-all duration-300 hover:border-[#FF4ECD]/40 overflow-hidden">
                 {/* 100% Solid Underlay - completely prevents any underlying text bleed-through */}

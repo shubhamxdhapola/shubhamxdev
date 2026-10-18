@@ -8,16 +8,19 @@ import {
   FiCheck,
   FiMaximize2,
   FiX,
-  FiShield,
-  FiCheckCircle,
 } from "react-icons/fi";
-import { SiHackerrank, SiNodedotjs, SiReact } from "react-icons/si";
+import { SiHackerrank, SiNodedotjs } from "react-icons/si";
 import { FaLinkedin } from "react-icons/fa";
 import Footer from "../components/Footer";
 import SpotlightCard from "../components/reactbits/SpotlightCard";
-import { certificationsData } from "../data/certifications";
+import { useCertifications } from "../hooks/queries";
+import { certificationsData as fallbackCerts } from "../data/certifications";
 
 export default function CertificationsPage() {
+  const { data } = useCertifications();
+  const certificationsData = data?.certifications || fallbackCerts;
+  const pageSettings = data?.pageSettings || {};
+
   const [selectedCert, setSelectedCert] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -39,10 +42,7 @@ export default function CertificationsPage() {
 
   const categories = [
     "All",
-    "Frontend",
-    "Backend",
-    "Core CS",
-    "Software Engineering",
+    ...new Set(certificationsData.map((c) => c.category).filter(Boolean)),
   ];
 
   const filteredCerts =
@@ -96,24 +96,51 @@ export default function CertificationsPage() {
       <main className="relative px-4 sm:px-6 pb-24 pt-32 max-w-7xl mx-auto">
         {/* Hero Section */}
         <div className="mx-auto max-w-4xl text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#FF4ECD]/15 bg-[#FF4ECD]/5 px-3.5 py-1 text-sm font-medium text-[#FFD6F4]">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 rounded-full border border-[#FF4ECD]/15 bg-[#FF4ECD]/5 px-3.5 py-1 text-sm font-medium text-[#FFD6F4]"
+          >
             <FiAward className="size-3.5 text-[#FF4ECD]" />
             <span>Verified Credentials</span>
-          </div>
+          </motion.div>
 
-          <h1 className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight font-rajdhani">
-            Validated Skills &{" "}
-            <span className="bg-gradient-to-r from-[#FFD6F4] via-[#FF4ECD] to-[#B3168A] bg-clip-text text-transparent">
-              Certifications
-            </span>
-          </h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-6 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight font-rajdhani"
+          >
+            {pageSettings.heading ? (
+              pageSettings.heading
+            ) : (
+              <>
+                Validated Skills &{" "}
+                <span className="bg-gradient-to-r from-[#FFD6F4] via-[#FF4ECD] to-[#B3168A] bg-clip-text text-transparent">
+                  Certifications
+                </span>
+              </>
+            )}
+          </motion.h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-gray-300 font-normal">
-            Continuous growth through rigorous assessments and technical simulations across React, Node.js, Problem Solving, and modern Software Engineering.
-          </p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-auto mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-gray-300 font-normal"
+          >
+            {pageSettings.description ||
+              "Continuous growth through rigorous assessments and technical simulations across React, Node.js, Problem Solving, and modern Software Engineering."}
+          </motion.p>
 
           {/* Category Filter Pills */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-2.5">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-8 flex flex-wrap justify-center gap-2 sm:gap-2.5"
+          >
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -126,11 +153,18 @@ export default function CertificationsPage() {
                 {cat}
               </button>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Certificate Cards Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+          {filteredCerts.length === 0 && (
+            <div className="col-span-full py-16 text-center text-gray-400">
+              <p className="text-base font-medium">
+                {pageSettings.emptyMessage || "No certifications found matching the selected category."}
+              </p>
+            </div>
+          )}
           {filteredCerts.map((cert, index) => (
             <motion.article
               key={cert.id}

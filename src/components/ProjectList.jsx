@@ -5,15 +5,27 @@ import { FiChevronRight } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import SectionHeading from "./SectionHeading";
 import ProjectCard from "./ProjectCard";
-import { projectsData } from "../data/projects";
+import { useProjects } from "../hooks/queries";
+import { projectsData as fallbackProjects } from "../data/projects";
 import { getTechLogo } from "../utils/techLogos";
 import { Github } from "./SocialIcons";
 
-const homeProjects = projectsData.slice(0, 4);
-
 export default function ProjectList() {
-  const [activeProject, setActiveProject] = useState(homeProjects[0] || projectsData[0]);
+  const { data: allProjects } = useProjects();
+  const projects = allProjects || fallbackProjects;
+  const homeProjects = projects.slice(0, 4);
+
+  const [selectedId, setSelectedId] = useState(null);
   const cardRefs = useRef([]);
+
+  const activeProject =
+    homeProjects.find((p) => p.id === selectedId || p.slug === selectedId) ||
+    homeProjects[0] ||
+    fallbackProjects[0];
+
+  const setActiveProject = (p) => {
+    setSelectedId(p?.id ?? p?.slug ?? null);
+  };
 
   // Sync active project reliably on scroll
   useEffect(() => {
@@ -31,7 +43,7 @@ export default function ProjectList() {
       }
 
       if (homeProjects[activeIndex]) {
-        setActiveProject(homeProjects[activeIndex]);
+        setSelectedId(homeProjects[activeIndex].id);
       }
     };
 
@@ -43,7 +55,7 @@ export default function ProjectList() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, []);
+  }, [homeProjects]);
 
   return (
     <section id="work" className="relative px-4 sm:px-6 mx-auto md:mt-16 w-full max-w-7xl py-10">

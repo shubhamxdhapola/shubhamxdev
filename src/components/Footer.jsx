@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FiMail } from "react-icons/fi";
 import { Github, Linkedin, Leetcode } from "./SocialIcons";
-import { profileData } from "../data/profile";
+import { useSiteContent } from "../hooks/queries";
+import { profileData as fallbackProfile } from "../data/profile";
 
 export default function Footer() {
+  const { data } = useSiteContent();
+  const profileData = data?.profile || fallbackProfile;
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [

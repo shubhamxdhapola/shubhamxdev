@@ -23,7 +23,9 @@ const BlurText = ({
   animationTo,
   easing = t => t,
   onAnimationComplete,
-  stepDuration = 0.35
+  stepDuration = 0.35,
+  trigger = true,
+  once = true
 }) => {
   const elements = animateBy === 'words' ? text.split(' ') : text.split('');
   const [inView, setInView] = useState(false);
@@ -31,18 +33,25 @@ const BlurText = ({
 
   useEffect(() => {
     if (!ref.current) return;
+    if (!trigger) {
+      setInView(false);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setInView(true);
-          observer.unobserve(ref.current);
+          if (once) observer.unobserve(ref.current);
+        } else if (!once) {
+          setInView(false);
         }
       },
       { threshold, rootMargin }
     );
     observer.observe(ref.current);
     return () => observer.disconnect();
-  }, [threshold, rootMargin]);
+  }, [threshold, rootMargin, trigger, once]);
 
   const defaultFrom = useMemo(
     () =>

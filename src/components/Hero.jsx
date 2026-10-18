@@ -1,13 +1,24 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, Copy, Check } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { FiArrowRight as ArrowRight, FiCopy as Copy, FiCheck as Check } from "react-icons/fi";
 import Particles from "./reactbits/Particles";
 import BlurText from "./reactbits/BlurText";
-import { profileData } from "../data/profile";
+import ErrorBoundary from "./ErrorBoundary";
 import { Link } from "react-router-dom";
+import { useSiteContent } from "../hooks/queries";
+import { useLoading } from "../context/LoadingContext";
+import { profileData as fallbackProfile } from "../data/profile";
 
 export default function Hero() {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: false, amount: 0.15 });
+  const { data } = useSiteContent();
+  const profileData = data?.profile || fallbackProfile;
   const [copied, setCopied] = useState(false);
+  const { hasLoaded } = useLoading();
+
+  // Animation triggers only after initial loading has completed AND Hero is inside viewport
+  const shouldAnimate = hasLoaded && isInView;
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(profileData.email);
@@ -17,23 +28,26 @@ export default function Hero() {
 
   return (
     <div
+      ref={containerRef}
       className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#030712]"
     >
       {/* Official ReactBits Particles Background */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        <Particles
-          particleColors={["#ffffff", "#FF4ECD", "#B3168A", "#FFD6F4"]}
-          particleCount={260}
-          particleSpread={10}
-          speed={0.12}
-          particleBaseSize={110}
-          moveParticlesOnHover={true}
-          particleHoverFactor={1.2}
-          alphaParticles={false}
-          sizeRandomness={1}
-          cameraDistance={20}
-          className="w-full h-full"
-        />
+        <ErrorBoundary fallback={null}>
+          <Particles
+            particleColors={["#ffffff", "#FF4ECD", "#B3168A", "#FFD6F4"]}
+            particleCount={260}
+            particleSpread={10}
+            speed={0.12}
+            particleBaseSize={110}
+            moveParticlesOnHover={true}
+            particleHoverFactor={1.2}
+            alphaParticles={false}
+            sizeRandomness={1}
+            cameraDistance={20}
+            className="w-full h-full"
+          />
+        </ErrorBoundary>
       </div>
 
       {/* Ambient gradient lighting */}
@@ -44,9 +58,8 @@ export default function Hero() {
         {/* Capsule 1: Top-Left */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: -35, y: -25 }}
-          whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
-          transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          animate={shouldAnimate ? { opacity: 1, scale: 1, x: 0, y: 0 } : { opacity: 0, scale: 0.8, x: -35, y: -25 }}
+          transition={{ duration: 1.2, delay: shouldAnimate ? 0.15 : 0, ease: [0.16, 1, 0.3, 1] }}
           className="absolute left-[-10%] md:left-[-5%] top-[15%] md:top-[20%]"
         >
           <div
@@ -60,9 +73,8 @@ export default function Hero() {
         {/* Capsule 2: Bottom-Right */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: 35, y: 30 }}
-          whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
-          transition={{ duration: 1.2, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+          animate={shouldAnimate ? { opacity: 1, scale: 1, x: 0, y: 0 } : { opacity: 0, scale: 0.8, x: 35, y: 30 }}
+          transition={{ duration: 1.2, delay: shouldAnimate ? 0.3 : 0, ease: [0.16, 1, 0.3, 1] }}
           className="absolute right-[-8%] md:right-[0%] top-[65%] md:top-[72%]"
         >
           <div
@@ -76,9 +88,8 @@ export default function Hero() {
         {/* Capsule 3: Bottom-Left */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: -25, y: 25 }}
-          whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
-          transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          animate={shouldAnimate ? { opacity: 1, scale: 1, x: 0, y: 0 } : { opacity: 0, scale: 0.8, x: -25, y: 25 }}
+          transition={{ duration: 1.2, delay: shouldAnimate ? 0.45 : 0, ease: [0.16, 1, 0.3, 1] }}
           className="absolute left-[5%] md:left-[10%] bottom-[5%] md:bottom-[10%]"
         >
           <div
@@ -92,9 +103,8 @@ export default function Hero() {
         {/* Capsule 4: Top-Right */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, x: 25, y: -20 }}
-          whileInView={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
-          transition={{ duration: 1.2, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          animate={shouldAnimate ? { opacity: 1, scale: 1, x: 0, y: 0 } : { opacity: 0, scale: 0.8, x: 25, y: -20 }}
+          transition={{ duration: 1.2, delay: shouldAnimate ? 0.6 : 0, ease: [0.16, 1, 0.3, 1] }}
           className="absolute right-[12%] md:right-[18%] top-[10%] md:top-[15%]"
         >
           <div
@@ -108,9 +118,8 @@ export default function Hero() {
         {/* Capsule 5: Top-Center-Left */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: -25 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.1 }}
-          transition={{ duration: 1.2, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          animate={shouldAnimate ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: -25 }}
+          transition={{ duration: 1.2, delay: shouldAnimate ? 0.75 : 0, ease: [0.16, 1, 0.3, 1] }}
           className="absolute left-[18%] md:left-[24%] top-[6%] md:top-[10%]"
         >
           <div
@@ -136,11 +145,10 @@ export default function Hero() {
                     <motion.span
                       key={`prefix-${i}`}
                       initial={{ opacity: 0, y: 35, filter: "blur(10px)", scale: 0.8 }}
-                      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-                      viewport={{ once: false, amount: 0.2 }}
+                      animate={shouldAnimate ? { opacity: 1, y: 0, filter: "blur(0px)", scale: 1 } : { opacity: 0, y: 35, filter: "blur(10px)", scale: 0.8 }}
                       transition={{
                         duration: 0.5,
-                        delay: 0.1 + globalIdx * 0.045,
+                        delay: shouldAnimate ? 0.08 + globalIdx * 0.045 : 0,
                         ease: [0.16, 1, 0.3, 1],
                       }}
                       whileHover={{ y: -5, rotate: 6, scale: 1.1, transition: { duration: 0.15 } }}
@@ -160,11 +168,10 @@ export default function Hero() {
                     <motion.span
                       key={`accent-${i}`}
                       initial={{ opacity: 0, y: 35, filter: "blur(10px)", scale: 0.7 }}
-                      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-                      viewport={{ once: false, amount: 0.2 }}
+                      animate={shouldAnimate ? { opacity: 1, y: 0, filter: "blur(0px)", scale: 1 } : { opacity: 0, y: 35, filter: "blur(10px)", scale: 0.7 }}
                       transition={{
                         duration: 0.55,
-                        delay: 0.1 + globalIdx * 0.045,
+                        delay: shouldAnimate ? 0.08 + globalIdx * 0.045 : 0,
                         ease: [0.16, 1, 0.3, 1],
                       }}
                       whileHover={{ y: -6, rotate: 6, scale: 1.1, transition: { duration: 0.15 } }}
@@ -187,11 +194,10 @@ export default function Hero() {
                     <motion.span
                       key={`suffix-${i}`}
                       initial={{ opacity: 0, y: 35, filter: "blur(10px)", scale: 0.8 }}
-                      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-                      viewport={{ once: false, amount: 0.2 }}
+                      animate={shouldAnimate ? { opacity: 1, y: 0, filter: "blur(0px)", scale: 1 } : { opacity: 0, y: 35, filter: "blur(10px)", scale: 0.8 }}
                       transition={{
                         duration: 0.5,
-                        delay: 0.1 + globalIdx * 0.045,
+                        delay: shouldAnimate ? 0.08 + globalIdx * 0.045 : 0,
                         ease: [0.16, 1, 0.3, 1],
                       }}
                       whileHover={{ y: -5, rotate: 6, scale: 1.1, transition: { duration: 0.15 } }}
@@ -212,15 +218,17 @@ export default function Hero() {
               delay={35}
               animateBy="words"
               direction="top"
-              className="text-base sm:text-lg md:text-xl leading-relaxed tracking-wide text-gray-300 font-medium max-w-2xl text-center justify-center"
+              trigger={shouldAnimate}
+              once={false}
+              className="text-base sm:text-lg md:text-xl leading-relaxed tracking text-gray-300 font-medium max-w-2xl text-center justify-center"
             />
           </div>
 
           {/* Call to Actions - matching reference layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55 }}
+            animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6, delay: shouldAnimate ? 0.75 : 0 }}
             className="mt-4 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-10"
           >
             {/* Let's Connect Button - reference site sliding fill hover effect with glass shine */}

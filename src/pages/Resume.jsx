@@ -11,10 +11,18 @@ import {
   FiZoomIn,
   FiZoomOut,
 } from "react-icons/fi";
-import { profileData } from "../data/profile";
+import { useSiteContent } from "../hooks/queries";
+import { profileData as fallbackProfile } from "../data/profile";
 import Footer from "../components/Footer";
 
 export default function Resume() {
+  const { data } = useSiteContent();
+  const profileData = data?.profile || fallbackProfile;
+  const resume = profileData.resume || fallbackProfile.resume;
+  const pdfUrl = resume.url || "/Shubham_Dhapola_Resume.pdf";
+  const fileName = resume.fileName || "Shubham_Dhapola_Resume.pdf";
+  const previewUrl = resume.previewUrl || "/Shubham_Dhapola_Resume_preview.webp";
+
   const [viewMode] = useState("preview"); // "preview" | "pdf"
   const [zoomLevel, setZoomLevel] = useState(100);
 
@@ -67,9 +75,8 @@ export default function Resume() {
                 </span>
               </h1>
               <p className="mt-4 text-sm sm:text-base leading-relaxed text-gray-300 font-normal">
-                Full-stack developer focused on building production-ready web
-                applications with clean frontend experiences, secure backend APIs,
-                and practical database performance improvements.
+                {resume.summary ||
+                  "Full-stack developer focused on building production-ready web applications with clean frontend experiences, secure backend APIs, and practical database performance improvements."}
               </p>
             </div>
 
@@ -80,7 +87,7 @@ export default function Resume() {
                   Role
                 </span>
                 <p className="mt-1 text-sm font-semibold text-white">
-                  {profileData.resume.role}
+                  {resume.role}
                 </p>
               </div>
 
@@ -89,7 +96,7 @@ export default function Resume() {
                   Location
                 </span>
                 <p className="mt-1 text-sm font-semibold text-white">
-                  {profileData.resume.location}
+                  {resume.location}
                 </p>
               </div>
 
@@ -98,7 +105,7 @@ export default function Resume() {
                   Tech Stack
                 </span>
                 <p className="mt-1 text-sm font-semibold text-white leading-snug">
-                  {profileData.resume.stack}
+                  {resume.stack}
                 </p>
               </div>
 
@@ -107,7 +114,7 @@ export default function Resume() {
                   Availability
                 </span>
                 <p className="mt-1 text-sm font-semibold text-white leading-snug">
-                  {profileData.resume.availability}
+                  {resume.availability}
                 </p>
               </div>
             </div>
@@ -120,10 +127,10 @@ export default function Resume() {
                 </div>
                 <div className="min-w-0 flex-1">
                   <h4 className="text-sm font-bold text-white truncate">
-                    Shubham Dhapola's Resume
+                    {profileData.name}'s Resume
                   </h4>
                   <p className="text-sm font-semibold text-gray-400 mt-0.5">
-                    {profileData.resume.fileName} • PDF File
+                    {fileName} • PDF File
                   </p>
                 </div>
               </div>
@@ -131,8 +138,10 @@ export default function Resume() {
               <div className="flex items-center gap-3 pt-1">
                 {/* Direct Download Button */}
                 <a
-                  href="/Shubham_Dhapola_Resume.pdf"
-                  download="Shubham_Dhapola_Resume.pdf"
+                  href={pdfUrl}
+                  download={fileName}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FFD6F4] via-[#FF4ECD] to-[#B3168A] px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-[#FF4ECD]/20 hover:shadow-[#FF4ECD]/35 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
                 >
                   <FiDownload className="size-4" />
@@ -141,7 +150,7 @@ export default function Resume() {
 
                 {/* Open in New Tab Button */}
                 <a
-                  href="/Shubham_Dhapola_Resume.pdf"
+                  href={pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="size-11 inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/[0.04] text-gray-300 hover:text-white hover:border-white/30 hover:bg-white/[0.08] transition-all hover:scale-105 active:scale-95"
@@ -159,22 +168,20 @@ export default function Resume() {
                 <span>Resume Highlights</span>
               </h3>
               <ul className="space-y-2 text-xs font-semibold text-gray-400">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FF4ECD] mt-0.5">•</span>
-                  <span><strong>Education:</strong> Master of Computer Applications, SAGE University (CGPA 8.67)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FF4ECD] mt-0.5">•</span>
-                  <span><strong>Core Skills:</strong> React, Next.js, Node.js, Express, MongoDB, TypeScript, Tailwind</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FF4ECD] mt-0.5">•</span>
-                  <span><strong>Key Projects:</strong> Octane (AI-powered Fuel Station Platform), BarbaeQ SaaS, BitLinks</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#FF4ECD] mt-0.5">•</span>
-                  <span><strong>Recognition:</strong> Star Performer of the Month (Oct 2025) & Tech Club Coordinator</span>
-                </li>
+                {(resume.highlights && resume.highlights.length > 0
+                  ? resume.highlights
+                  : [
+                      "Education: Master of Computer Applications, SAGE University (CGPA 8.67)",
+                      "Core Skills: React, Next.js, Node.js, Express, MongoDB, TypeScript, Tailwind",
+                      "Key Projects: Octane (AI-powered Fuel Station Platform), BarbaeQ SaaS, BitLinks",
+                      "Recognition: Star Performer of the Month (Oct 2025) & Tech Club Coordinator",
+                    ]
+                ).map((highlight, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="text-[#FF4ECD] mt-0.5">•</span>
+                    <span>{highlight}</span>
+                  </li>
+                ))}
               </ul>
             </div>
           </motion.div>
@@ -255,7 +262,7 @@ export default function Resume() {
 
                   {/* Open in full screen / new tab */}
                   <a
-                    href="/Shubham_Dhapola_Resume.pdf"
+                    href={pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-sm  text-gray-400 hover:text-white transition-colors px-2 py-1 rounded-md hover:bg-white/[0.05]"
@@ -276,26 +283,25 @@ export default function Resume() {
                       style={{ width: `${zoomLevel}%` }}
                       className="max-w-2xl bg-white rounded-lg shadow-2xl overflow-hidden border border-white/10 transition-all duration-200"
                     >
-                      <picture>
-                        <source
-                          srcSet="/Shubham_Dhapola_Resume_preview.webp"
-                          type="image/webp"
-                        />
-                        <img
-                          src="/Shubham_Dhapola_Resume_preview.png"
-                          alt="Shubham Dhapola Resume"
-                          className="w-full h-auto block select-none"
-                          loading="eager"
-                        />
-                      </picture>
+                      <img
+                        src={previewUrl}
+                        alt={`${profileData.name} Resume`}
+                        className="w-full h-auto block select-none"
+                        loading="eager"
+                        onError={(e) => {
+                          if (e.target.src !== "/Shubham_Dhapola_Resume_preview.webp") {
+                            e.target.src = "/Shubham_Dhapola_Resume_preview.webp";
+                          }
+                        }}
+                      />
                     </div>
                   </div>
                 ) : (
                   /* Native PDF Iframe View */
                   <div className="w-full h-[750px] rounded-lg overflow-hidden bg-slate-900 border border-white/10">
                     <iframe
-                      src="/Shubham_Dhapola_Resume.pdf#view=FitH"
-                      title="Shubham Dhapola Resume PDF"
+                      src={`${pdfUrl}#view=FitH`}
+                      title={`${profileData.name} Resume PDF`}
                       className="w-full h-full border-0"
                     />
                   </div>
@@ -309,8 +315,10 @@ export default function Resume() {
                   Original Resume PDF Loaded
                 </span>
                 <a
-                  href="/Shubham_Dhapola_Resume.pdf"
-                  download="Shubham_Dhapola_Resume.pdf"
+                  href={pdfUrl}
+                  download={fileName}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 font-bold text-[#FF4ECD] hover:text-[#FFD6F4] transition"
                 >
                   <FiDownload className="size-3.5" />

@@ -2,10 +2,15 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import SectionHeading from "./SectionHeading";
 import ScrollVelocity from "./reactbits/ScrollVelocity";
-import { skillsData, marqueeItems } from "../data/skills";
+import { useSkills } from "../hooks/queries";
+import { skillsData as fallbackSkills, marqueeItems as fallbackMarquee } from "../data/skills";
 import { TbSparkle } from "react-icons/tb";
 
 export default function Skills() {
+  const { data } = useSkills();
+  const skillsData = data?.skills || fallbackSkills;
+  const marqueeItems = data?.marqueeItems || fallbackMarquee;
+
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({

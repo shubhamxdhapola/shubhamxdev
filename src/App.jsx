@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { usePageTracking } from "./hooks/usePageTracking";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Work from "./pages/Work";
@@ -16,6 +17,9 @@ import { LoadingProvider, useLoading } from "./context/LoadingContext";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
+
+  // Track page views on every navigation
+  usePageTracking();
 
   useEffect(() => {
     if (hash) {

@@ -126,12 +126,12 @@ export default function About() {
             />
 
             {/* Circular Text from ReactBits */}
-            <div className="absolute -inset-4 sm:-inset-5 md:-inset-8 pointer-events-none flex items-center justify-center z-0 select-none">
+            <div className="absolute -inset-7  md:-inset-8 pointer-events-none flex items-center justify-center z-0 select-none">
               <CircularText
                 text={profileData.circularText}
                 spinDuration={24}
                 onHover="speedUp"
-                className="size-full text-[#FFD6F4]/75 text-[12px] sm:text-[13px] md:text-[14px] font-bold uppercase drop-shadow-[0_0_8px_rgba(255,78,205,0.4)] pointer-events-none"
+                className="size-full text-[#FFD6F4]/75 text-[13px] md:text-[15px] font-bold uppercase drop-shadow-[0_0_8px_rgba(255,78,205,0.4)] pointer-events-none"
               />
             </div>
 

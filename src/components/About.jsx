@@ -1,7 +1,13 @@
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { FiCode, FiTerminal, FiMail, FiLayers } from "react-icons/fi";
+import {
+  FiCode,
+  FiTerminal,
+  FiMail,
+  FiLayers,
+  FiActivity,
+} from "react-icons/fi";
 import { SiLeetcode } from "react-icons/si";
 import { Github, Linkedin, Facebook } from "./SocialIcons";
 import SectionHeading from "./SectionHeading";
@@ -29,12 +35,35 @@ export default function About() {
   const getIcon = (iconName, idx) => {
     switch (iconName) {
       case "code":
-        return <FiCode className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`} />;
+        return (
+          <FiCode
+            className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`}
+          />
+        );
       case "terminal":
-        return <FiTerminal className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`} />;
+        return (
+          <FiTerminal
+            className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`}
+          />
+        );
       case "layers":
+        return (
+          <FiLayers
+            className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`}
+          />
+        );
+      case "activity":
+        return (
+          <FiActivity
+            className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`}
+          />
+        );
       default:
-        return <FiLayers className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`} />;
+        return (
+          <FiLayers
+            className={`h-4 w-4 ${whatIDoColors[idx % whatIDoColors.length]}`}
+          />
+        );
     }
   };
 
@@ -242,7 +271,9 @@ export default function About() {
 
           {/* What I Do Pills with ReactBits LogoLoop animation */}
           <div className="mb-6 sm:mb-7 w-full min-w-0 overflow-hidden">
-            <h4 className="text-lg sm:text-xl font-semibold mb-3 text-white tracking-wide">What I Do</h4>
+            <h4 className="text-lg sm:text-xl font-semibold mb-3 text-white tracking-wide">
+              What I Do
+            </h4>
             <div className="w-full max-w-full overflow-hidden -my-2 min-w-0">
               <LogoLoop
                 logos={whatIDoLogos}

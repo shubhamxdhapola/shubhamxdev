@@ -17,7 +17,7 @@ export default function Home() {
       <ProjectList />
       <Skills />
       <LeetCodeStats />
-      <Certifications />
+      <Certifications limit={6} />
       <Education />
       <Contact />
       <Footer />

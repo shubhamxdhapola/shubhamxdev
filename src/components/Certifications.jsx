@@ -330,7 +330,7 @@ export default function Certifications({ limit, showHeader = true }) {
 
                   <button
                     onClick={(e) => handleCopyId(e, selectedCert.id, selectedCert.credentialId)}
-                    className="text-[#FF4ECD] hover:underline flex items-center gap-1 font-medium font-semibold"
+                    className="text-[#FF4ECD] hover:underline flex items-center gap-1 font-semibold"
                   >
                     {copiedId === selectedCert.id ? (
                       <>

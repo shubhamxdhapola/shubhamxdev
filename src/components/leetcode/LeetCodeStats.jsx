@@ -19,6 +19,7 @@ import TiltCard from "./TiltCard";
 import { fetchLeetCodeStats } from "../../utils/leetcodeApi";
 import { LEETCODE_CONFIG } from "../../data/leetcode";
 import { useLeetCodeStats } from "../../hooks/queries";
+import { Link } from "react-router-dom";
 
 /**
  * AnimatedNumber component that counts up smoothly every time it scrolls into view
@@ -155,7 +156,7 @@ export default function LeetCodeStats({ showHeader = true, username: propUsernam
                 Retry Now
               </button>
               <a
-                href={LEETCODE_CONFIG.profileUrl}
+                href={LEETCODE_CONFIG.profileUrl || 'https://leetcode.com/u/shubhamxdhapola/'}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-xl bg-[#FFA116] px-4 py-2 text-sm font-semibold text-black hover:bg-[#ffae33] transition-colors shadow-[0_0_15px_rgba(255,161,22,0.4)]"
@@ -247,15 +248,15 @@ export default function LeetCodeStats({ showHeader = true, username: propUsernam
                         <FiRefreshCw className={`size-4 ${refreshing ? "animate-spin text-[#FFA116]" : ""}`} />
                       </button>
 
-                      <a
-                        href={data.profileUrl}
+                      <Link
+                        to={data.profileUrl}
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#FFA116] to-[#FF8000] text-black font-semibold text-xs sm:text-sm hover:scale-[1.03] active:scale-[0.98] transition-all "
                       >
                         <span>LeetCode Profile</span>
                         <FiExternalLink className="size-3.5" />
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </SpotlightCard>

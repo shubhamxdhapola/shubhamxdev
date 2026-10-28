@@ -233,7 +233,7 @@ export default function Hero() {
           >
             {/* Let's Connect Button - reference site sliding fill hover effect with glass shine */}
             <Link
-              to="/contact"
+              to="#contact"
               className="group relative flex items-center gap-1 overflow-hidden rounded-full border border-white/10 bg-white/10 p-1 text-[15px] font-medium text-white backdrop-blur-xs transition-all duration-300 hover:border-white/20 cursor-pointer"
             >
               {/* Glass shine sweep effect */}

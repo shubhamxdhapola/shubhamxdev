@@ -49,7 +49,7 @@ function AppContent() {
     <BrowserRouter>
       <InitialLoader
         isReady={isDataReady}
-        minDuration={1400}
+        minDuration={2200}
         onComplete={() => setHasLoaded(true)}
       />
       <SmoothScroll>
